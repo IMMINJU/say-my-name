@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { Character } from '../types';
+import { CHARACTER_NAMES } from '../constants';
 
 interface DialogueBoxProps {
   character: Character;
@@ -7,12 +8,6 @@ interface DialogueBoxProps {
   innerThought?: boolean;
   onNext: () => void;
 }
-
-const characterNames: Record<NonNullable<Character>, string> = {
-  walter: '월터',
-  jesse: '제시',
-  tuco: '투코',
-};
 
 export function DialogueBox({ character, text, innerThought, onNext }: DialogueBoxProps) {
   return (
@@ -45,7 +40,7 @@ export function DialogueBox({ character, text, innerThought, onNext }: DialogueB
             marginBottom: '8px',
           }}
         >
-          {characterNames[character]}{innerThought ? ' (내면)' : ''}
+          {CHARACTER_NAMES[character]}{innerThought ? ' (내면)' : ''}
         </div>
       )}
 

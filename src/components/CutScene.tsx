@@ -1,24 +1,11 @@
 import { motion } from 'framer-motion';
 import type { CutScene as CutSceneType } from '../types';
+import { CUTSCENE_LABELS, CUTSCENE_COLORS } from '../constants';
 
 interface CutSceneProps {
   cutscene: CutSceneType;
   onClose: () => void;
 }
-
-const cutsceneLabels: Record<CutSceneType, string> = {
-  fulminate: '풀민산수은을 들어올리는 월터',
-  explosion: '폭발',
-  heisenberg: '하이젠베르크 각성',
-  study: '월터와 투코의 화학 공부',
-};
-
-const cutsceneColors: Record<CutSceneType, string> = {
-  fulminate: '#1a3a5c',
-  explosion: '#5c1a1a',
-  heisenberg: '#1a1a1a',
-  study: '#3a5c1a',
-};
 
 export function CutScene({ cutscene, onClose }: CutSceneProps) {
   return (
@@ -31,7 +18,7 @@ export function CutScene({ cutscene, onClose }: CutSceneProps) {
       style={{
         position: 'absolute',
         inset: 0,
-        backgroundColor: cutsceneColors[cutscene],
+        backgroundColor: CUTSCENE_COLORS[cutscene],
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -65,7 +52,7 @@ export function CutScene({ cutscene, onClose }: CutSceneProps) {
             fontWeight: 'bold',
           }}
         >
-          {cutsceneLabels[cutscene]}
+          {CUTSCENE_LABELS[cutscene]}
         </div>
       </div>
 

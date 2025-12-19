@@ -1,35 +1,11 @@
 import { motion } from 'framer-motion';
 import type { Character, Expression } from '../types';
+import { CHARACTER_NAMES, CHARACTER_COLORS, EXPRESSION_EMOJI } from '../constants';
 
 interface CharacterSpriteProps {
   character: Character;
   expression: Expression;
 }
-
-const characterNames: Record<NonNullable<Character>, string> = {
-  walter: '월터',
-  jesse: '제시',
-  tuco: '투코',
-};
-
-const characterColors: Record<NonNullable<Character>, string> = {
-  walter: '#4a7c59',
-  jesse: '#7c4a4a',
-  tuco: '#7c6a4a',
-};
-
-const expressionEmoji: Record<Expression, string> = {
-  default: '😐',
-  worried: '😟',
-  determined: '😤',
-  angry: '😠',
-  hollow: '😔',
-  bloody: '🤕',
-  mocking: '😏',
-  shocked: '😨',
-  respect: '🤝',
-  crying: '😢',
-};
 
 export function CharacterSprite({ character, expression }: CharacterSpriteProps) {
   if (!character) return null;
@@ -55,7 +31,7 @@ export function CharacterSprite({ character, expression }: CharacterSpriteProps)
         style={{
           width: '300px',
           height: '350px',
-          backgroundColor: characterColors[character],
+          backgroundColor: CHARACTER_COLORS[character],
           borderRadius: '150px 150px 0 0',
           display: 'flex',
           flexDirection: 'column',
@@ -65,7 +41,7 @@ export function CharacterSprite({ character, expression }: CharacterSpriteProps)
           boxShadow: '0 4px 30px rgba(0,0,0,0.4)',
         }}
       >
-        <span style={{ fontSize: '5rem' }}>{expressionEmoji[expression]}</span>
+        <span style={{ fontSize: '5rem' }}>{EXPRESSION_EMOJI[expression]}</span>
         <span
           style={{
             color: 'white',
@@ -73,7 +49,7 @@ export function CharacterSprite({ character, expression }: CharacterSpriteProps)
             fontWeight: 'bold',
           }}
         >
-          {characterNames[character]}
+          {CHARACTER_NAMES[character]}
         </span>
       </div>
     </motion.div>

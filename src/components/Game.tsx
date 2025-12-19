@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../store/gameStore';
-import { script } from '../data/script';
+import { useGameNode } from '../hooks';
 import { Background } from './Background';
 import { CharacterSprite } from './CharacterSprite';
 import { DialogueBox } from './DialogueBox';
@@ -10,11 +9,9 @@ import { CutScene } from './CutScene';
 import { Effects } from './Effects';
 import { EndingScreen } from './EndingScreen';
 import { TitleScreen } from './TitleScreen';
-import type { ChoiceOption, ScriptNode } from '../types';
 
 export function Game() {
   const {
-    currentNodeId,
     isStarted,
     currentBackground,
     currentCharacter,
@@ -22,97 +19,20 @@ export function Game() {
     currentEffect,
     currentCutscene,
     currentEnding,
-    setNode,
-    setFlag,
-    hasFlag,
-    setBackground,
-    setCharacter,
-    setEffect,
-    setCutscene,
-    setEnding,
     startGame,
     resetGame,
   } = useGameStore();
 
-  const [showCutscene, setShowCutscene] = useState(false);
-
-  const currentNode: ScriptNode | undefined = script[currentNodeId];
-
-  // 노드 처리
-  const processNode = useCallback((node: ScriptNode) => {
-    switch (node.type) {
-      case 'dialogue':
-        if (node.character) {
-          setCharacter(node.character, node.expression || 'default');
-        }
-        break;
-
-      case 'scene':
-        if (node.background) {
-          setBackground(node.background);
-        }
-        if (node.effect && node.effect !== 'none') {
-          setEffect(node.effect);
-        }
-        if (node.cutscene) {
-          setCutscene(node.cutscene);
-          setShowCutscene(true);
-        } else {
-          // 컷씬 없으면 바로 다음으로
-          if (!node.effect || node.effect === 'none') {
-            setNode(node.next);
-          }
-        }
-        break;
-
-      case 'ending':
-        setEnding({ title: node.title, subtitle: node.subtitle });
-        break;
-
-      case 'choice':
-        // 선택지는 별도 처리 없음
-        break;
-    }
-  }, [setCharacter, setBackground, setEffect, setCutscene, setNode, setEnding]);
-
-  // 노드 변경 시 처리
-  useEffect(() => {
-    if (currentNode) {
-      processNode(currentNode);
-    }
-  }, [currentNodeId, currentNode, processNode]);
-
-  // 다음 대사로 이동
-  const handleNext = () => {
-    if (currentNode?.type === 'dialogue' && currentNode.next) {
-      setNode(currentNode.next);
-    }
-  };
-
-  // 선택지 선택
-  const handleChoice = (choice: ChoiceOption) => {
-    if (choice.setFlag) {
-      setFlag(choice.setFlag);
-    }
-    setNode(choice.next);
-  };
-
-  // 컷씬 닫기
-  const handleCloseCutscene = () => {
-    setShowCutscene(false);
-    setCutscene(null);
-    if (currentNode?.type === 'scene') {
-      setNode(currentNode.next);
-    }
-  };
-
-  // 이펙트 완료
-  const handleEffectComplete = () => {
-    setEffect('none');
-    if (currentNode?.type === 'scene' && !currentNode.cutscene) {
-      setNode(currentNode.next);
-    }
-  };
+  const {
+    currentNode,
+    showCutscene,
+    hasFlag,
+    handleNext,
+    handleChoice,
+    handleCloseCutscene,
+    handleEffectComplete,
+    handleScreenClick,
+  } = useGameNode();
 
   // 타이틀 화면
   if (!isStarted) {
@@ -129,13 +49,6 @@ export function Game() {
       />
     );
   }
-
-  // 화면 아무데나 클릭하면 다음 대사로
-  const handleScreenClick = () => {
-    if (currentNode?.type === 'dialogue' && currentNode.next) {
-      setNode(currentNode.next);
-    }
-  };
 
   return (
     <div
