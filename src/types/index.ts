@@ -51,6 +51,8 @@ export interface ChoiceNode {
   type: 'choice';
   id: string;
   choices: ChoiceOption[];
+  timer?: number; // 초 단위 타이머 (없으면 무제한)
+  timeoutChoice?: number; // 타임아웃 시 선택될 인덱스
 }
 
 export interface SceneNode {

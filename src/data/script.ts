@@ -1499,6 +1499,8 @@ export const script: GameScript = {
       { text: '돈 안 주면 후회할 겁니다', next: 'scene5_threat' },
       { text: '(주머니에 손을 넣는다)', next: 'scene6_fulminate' },
     ],
+    timer: 5,
+    timeoutChoice: 0, // 협상 시도 → 실패 루트로
   },
 
   // 협상 루트
@@ -1550,6 +1552,8 @@ export const script: GameScript = {
       { text: '그건 안 될 겁니다', next: 'scene5_confidence' },
       { text: '(주머니에 손을 넣는다)', next: 'scene6_fulminate' },
     ],
+    timer: 5,
+    timeoutChoice: 0, // 논리적 설득 시도 → 실패
   },
   scene5_logic_fail: {
     type: 'dialogue',
@@ -1653,6 +1657,8 @@ export const script: GameScript = {
       { text: '(풀민산수은을 꺼낸다)', next: 'scene6_fulminate' },
       { text: '(도망친다)', next: 'bad_end_2_scene' },
     ],
+    timer: 5,
+    timeoutChoice: 2, // 도망 → BAD END 2
   },
   scene5_endure: {
     type: 'dialogue',
@@ -2011,6 +2017,8 @@ export const script: GameScript = {
         hidden: true,
       },
     ],
+    timer: 5,
+    timeoutChoice: 2, // 대답 못함 → BAD END 3
   },
 
   // ========================================

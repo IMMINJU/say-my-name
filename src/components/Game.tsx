@@ -58,7 +58,7 @@ export function Game() {
         width: '100%',
         height: '100%',
         overflow: 'hidden',
-        backgroundColor: '#000',
+        backgroundColor: 'black',
         cursor: currentNode?.type === 'dialogue' ? 'pointer' : 'default',
       }}
     >
@@ -86,9 +86,12 @@ export function Game() {
       {/* 선택지 */}
       {currentNode?.type === 'choice' && (
         <ChoiceMenu
+          key={currentNode.id}
           choices={currentNode.choices}
           onSelect={handleChoice}
           hasFlag={hasFlag}
+          timer={currentNode.timer}
+          timeoutChoice={currentNode.timeoutChoice}
         />
       )}
 
